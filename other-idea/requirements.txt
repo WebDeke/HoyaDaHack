@@ -1,0 +1,2 @@
+# requirements.txt
+gsheetsdb==x.x.x
