@@ -7,7 +7,7 @@ from pprint import pprint
 import streamlit as st
 from gsheetsdb import connect
 
-rowcount = 3
+rowcount = 4
 scope = ["https://spreadsheets.google.com/feeds", 'https://www.googleapis.com/auth/spreadsheets',
          "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive"]
 
@@ -45,7 +45,7 @@ def run_query(query):
     return rows
 def addUser(fname, lname):
     rowcount += 1
-    sheet.insert_row([rowcount, fname, lname], rowcount)
+    sheet.insert_row([rowcount-1, fname, lname], rowcount)
 
 
 def addCourses(rowcount, classes):
@@ -92,8 +92,10 @@ def main():
     # Create a connection object.
 
     print("Hello World!")
-    addUser(rowcount, "Hanz", "Zimmer")
-    addCourses([rowcount, 'Calc1', 'Calc2'])
+    addUser("Hanz", "Zimmer")
+    addCourses(rowcount, ['Calc1','Calc2'])
+
+    st.write(sheet.get_all_records())
 
 if __name__ == "__main__":
     main()
