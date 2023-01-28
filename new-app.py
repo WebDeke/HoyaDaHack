@@ -7,7 +7,6 @@ from pprint import pprint
 import streamlit as st
 from gsheetsdb import connect
 
-rowcount = 4
 scope = ["https://spreadsheets.google.com/feeds", 'https://www.googleapis.com/auth/spreadsheets',
          "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive"]
 
@@ -15,6 +14,7 @@ credentials = ServiceAccountCredentials.from_json_keyfile_name(
     "./studybuddy-376115-369daa1f5b57.json", scope)
 
 client = gspread.authorize(credentials)
+
 
 
 # Open the spreadhseet
@@ -28,6 +28,7 @@ public_gsheets_url = "https://docs.google.com/spreadsheets/d/1tYPHXibwW4lMQBH8ia
 # Create a connection object.
 conn = connect()
 
+rowcount = 4
 # Perform SQL query on the Google Sheet.
 # Uses st.cache to only rerun when the query changes or after 10 min.
 @st.cache(ttl=600)
@@ -44,21 +45,43 @@ def run_query(query):
     rows = rows.fetchall()
     return rows
 def addUser(fname, lname):
+    global rowcount
     rowcount += 1
-    sheet.insert_row([rowcount-1, fname, lname], rowcount)
+    sheet.insert_row([str(rowcount-1), fname, lname], rowcount)
 
 
-def addCourses(rowcount, classes):
+def addCourses(classes):
+    global rowcount
     record = sheet.row_values(rowcount)
     sheet.update_cell(rowcount, 4, classes)
 
 
 def favoriteSpace(space):
+    global rowcount
     sheet.update_cell(rowcount, 5, space)
 
 
 def phone(phone):
+    global rowcount
     sheet.update_cell(rowcount, 6, phone)
+
+def listFirstNames():
+    print(sheet.col_values(2))
+    return sheet.col_values(2)
+def listLastNames():
+    print(sheet.col_values(3))
+    return sheet.col_values(3)
+
+def checkIfDuplicate(fname, lname):
+    firstNames = listFirstNames()
+    lastNames = listLastNames()
+    for i in range(0, len(firstNames)):
+        for j in range(0, len(lastNames)):
+            if(fname == firstNames[i] and lname == lastNames[j]):
+                return True
+    return False
+
+
 
 # Get a list of all records
 
@@ -86,16 +109,14 @@ phone = st.text_input("Phone number")
 st.button("Find a partner")
 
 
-def main():
+# Create a connection object.
+print("Hello World!")
+addUser("Hanz", "Zimmer")
+# addUser()
+classitems = "Calc1,Calc2"
+addCourses(classitems)
 
-    
-    # Create a connection object.
+sheet.col_values
 
-    print("Hello World!")
-    addUser("Hanz", "Zimmer")
-    addCourses(rowcount, ['Calc1','Calc2'])
+st.write(sheet.get_all_records())
 
-    st.write(sheet.get_all_records())
-
-if __name__ == "__main__":
-    main()
