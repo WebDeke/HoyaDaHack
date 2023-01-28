@@ -1,6 +1,6 @@
 import openai
 import streamlit as st
-from streamlit_chat import message
+from streamlit import message
 import os 
 from dotenv import load_dotenv
 load_dotenv('api_key.env')
@@ -16,7 +16,7 @@ def generate_response(prompt):
     )
     message=completion.choices[0].text
     return message
-    
+
 st.title("ChatGPT-like Web App")
 #storing the chat
 if 'generated' not in st.session_state:
