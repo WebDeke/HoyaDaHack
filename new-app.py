@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import gspread
+import gspread as gs
 from oauth2client.service_account import ServiceAccountCredentials
 from pprint import pprint
 import streamlit as st
@@ -15,7 +15,7 @@ scope = ["https://spreadsheets.google.com/feeds", 'https://www.googleapis.com/au
 credentials = ServiceAccountCredentials.from_json_keyfile_name(
     "./studybuddy-376115-369daa1f5b57.json", scope)
 
-client = gspread.authorize(credentials)
+client = gs.authorize(credentials)
 
 
 
