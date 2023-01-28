@@ -91,6 +91,9 @@ class Users():
             list_res.append(doc)
         return list_res[0]["scenes"][sceneNum]
 
+    def addUser(self, fName, lName):
+        client = self._get_client()
+        record = 
     def get_by_template(self,
                         path=None,
                         template=None,
