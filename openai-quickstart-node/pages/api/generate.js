@@ -16,11 +16,11 @@ export default async function (req, res) {
     return;
   }
 
-  const animal = req.body.animal || "";
-  if (animal.trim().length === 0) {
+  const task = req.body.task || "";
+  if (task.trim().length === 0) {
     res.status(400).json({
       error: {
-        message: "Please enter a valid animal",
+        message: "Please enter a valid task",
       },
     });
     return;
@@ -29,10 +29,12 @@ export default async function (req, res) {
   try {
     const completion = await openai.createCompletion({
       model: "text-davinci-003",
-      prompt: generatePrompt(animal),
+      prompt: generatePrompt(task),
       temperature: 0.6,
     });
-    res.status(200).json({ result: completion.data.choices[0].text });
+    const steps = completion.data.choices[0].text.split("\n");
+    const bulletedList = steps.map((step) => `- ${step}`).join("\n");
+    res.status(200).json({ result: bulletedList });
   } catch (error) {
     // Consider adjusting the error handling logic for your use case
     if (error.response) {
@@ -49,15 +51,8 @@ export default async function (req, res) {
   }
 }
 
-function generatePrompt(animal) {
-  const capitalizedAnimal =
-    animal[0].toUpperCase() + animal.slice(1).toLowerCase();
-  return `Suggest three names for an animal that is a superhero.
-
-Animal: Cat
-Names: Captain Sharpclaw, Agent Fluffball, The Incredible Feline
-Animal: Dog
-Names: Ruff the Protector, Wonder Canine, Sir Barks-a-Lot
-Animal: ${capitalizedAnimal}
-Names:`;
+function generatePrompt(task) {
+  const capitalizedtasks = task[0].toUpperCase() + task.slice(1).toLowerCase();
+  return `Steps to ${capitalizedtasks} (bold a keyword for each step):
+  `;
 }
