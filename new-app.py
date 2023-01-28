@@ -6,12 +6,12 @@ st.title('Commilito: Find your study partner in arms.')
 col1, col2 = st.columns([3, 1])
 
 col1.subheader("A wide column with a chart")
-classes = st.multiselect(
+col1.classes = st.multiselect(
     'What classes are you taking',
     ['COSC 225', 'MATH 150', 'CHEM 228', 'PHYS 101', 'HIST 007', 'CULP 346', 'CLSS 141', 'CLSL 002'],
     )
 
-space = st.select_slider(
+col1.space = st.select_slider(
     'Select your favorite space',
     options=['Place A', 'Place B', 'Place C', 'Place D', 'Place E']
     )
