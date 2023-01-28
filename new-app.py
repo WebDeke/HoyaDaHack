@@ -11,6 +11,6 @@ classes = st.multiselect(
 
 space = st.select_slider(
     'Select your favorite space',
-    space=['Place A', 'Place B', 'Place C', 'Place D', 'Place E']
+    options=['Place A', 'Place B', 'Place C', 'Place D', 'Place E']
     )
 st.write('I am taking', classes, 'and my favorite study space is', space)
