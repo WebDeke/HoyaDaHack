@@ -92,6 +92,7 @@ def userList():
     data = sheet.get_all_records()
     pprint(data)
 
+#START OF STREAMLIT CODE..................
 
 st.title('Commilito')
 st.subheader("Combine academic weapons.")
@@ -110,7 +111,10 @@ phone = st.text_input("Phone number")
 
 st.button("Find a partner")
 
+#............................................
 
+
+#TEST CODE, not part of codebase
 # Create a connection object.
 print("Hello World!")
 addUser("Hanz", "Zimmer")
