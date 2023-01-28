@@ -14,4 +14,4 @@ space = st.select_slider(
     options=['Place A', 'Place B', 'Place C', 'Place D', 'Place E']
     )
 
-if st.button("Find a partner"):
+st.button("Find a partner")
