@@ -59,6 +59,8 @@ class Base_Resource(ABC):
 
     @abstractmethod
     def create(self, new_resource):
+
+        
         """
 
         Assume that
