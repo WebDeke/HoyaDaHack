@@ -1,5 +1,5 @@
 import streamlit as st
-import sqlite3
+from gsheetsdb import connect
 from shapely.geometry import Point, Polygon
 import geopandas as gpd
 import pandas as pd
@@ -24,31 +24,6 @@ map_data = pd.DataFrame({'lat': [lat], 'lon': [lon]})
 
 st.map(map_data) 
 
-
-def create_database():
-    # Create a new SQLite database and create a table to store course information
-    conn = sqlite3.connect('study_buddies')
-    c = conn.cursor()
-    c.execute('''CREATE TABLE IF NOT EXISTS courses (username text, courses text)''')
-    conn.commit()
-    conn.close()
-
-def add_courses(username, courses):
-    # Add a new user's course information to the database
-    conn = sqlite3.connect('study_buddies')
-    c = conn.cursor()
-    c.execute("INSERT INTO courses VALUES (?,?)", (username, courses))
-    conn.commit()
-    conn.close()
-
-def find_study_buddies(username):
-    # Find other users who are taking the same courses
-    conn = sqlite3.connect('study_buddies')
-    c = conn.cursor()
-    c.execute("SELECT * FROM courses WHERE username!=? AND courses IN (SELECT courses FROM courses WHERE username=?)", (username,username))
-    results = c.fetchall()
-    conn.close()
-    return results
 
 def main():
     st.set_page_config(page_title="Study Buddy Finder", page_icon=":guardsman:", layout="wide")

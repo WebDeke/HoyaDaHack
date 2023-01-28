@@ -1,1 +1,6 @@
-hello
+name
+courses
+email
+SMS
+mongosh "mongodb+srv://studyusers.b1bzofp.mongodb.net/myFirstDatabase" --apiVersion 1 --username admin
+5zGDjohcbP4TApTH

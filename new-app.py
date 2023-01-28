@@ -18,3 +18,5 @@ space = st.select_slider(
     )
 
 st.button("Find a partner")
+
+phone = st.text_input("Phone number")
