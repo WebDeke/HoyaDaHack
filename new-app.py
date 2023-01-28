@@ -17,6 +17,6 @@ space = st.select_slider(
     options=['Place A', 'Place B', 'Place C', 'Place D', 'Place E']
     )
 
-st.button("Find a partner")
-
 phone = st.text_input("Phone number")
+
+st.button("Find a partner")
