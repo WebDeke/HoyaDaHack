@@ -7,6 +7,8 @@ from pprint import pprint
 import streamlit as st
 from gsheetsdb import connect
 
+import sys, subprocess
+subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'gspread'])
 scope = ["https://spreadsheets.google.com/feeds", 'https://www.googleapis.com/auth/spreadsheets',
          "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive"]
 
