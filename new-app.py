@@ -68,11 +68,8 @@ def userList():
     pprint(data)
 
 
-st.title('Commilito: Find your study partner in arms.')
-
-fname = st.text_input('First name')
-lname = st.text_input('Last name')
-
+st.title('Commilito')
+st.subheader("Combine academic weapons.")
 classes = st.multiselect(
     'What classes are you taking',
     ['COSC 225', 'MATH 150', 'CHEM 228', 'PHYS 101',
@@ -82,7 +79,7 @@ classes = st.multiselect(
 space = st.select_slider(
     'Select your favorite space',
     options=['Place A', 'Place B', 'Place C', 'Place D', 'Place E']
-)
+    )
 
 phone = st.text_input("Phone number")
 
