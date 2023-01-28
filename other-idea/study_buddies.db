@@ -1,0 +1,17 @@
+import sqlite3
+
+# Connect to or create the database
+conn = sqlite3.connect('study_buddies.db')
+c = conn.cursor()
+
+# Create the table to store user information
+c.execute('''CREATE TABLE users (name TEXT, courses TEXT, contact_info TEXT)''')
+
+# Add some sample data
+c.execute("INSERT INTO users VALUES ('John Doe', 'Math, History, English', 'johndoe@email.com')")
+c.execute("INSERT INTO users VALUES ('Jane Smith', 'Biology, Chemistry, Physics', 'janesmith@email.com')")
+c.execute("INSERT INTO users VALUES ('Bob Johnson', 'Computer Science, Economics', 'bobjohnson@email.com')")
+
+# Commit the changes and close the connection
+conn.commit()
+conn.close()
