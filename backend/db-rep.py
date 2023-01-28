@@ -49,17 +49,16 @@ user_schema = {
         'required': True,
     }
 }
-
+@app.route('/api/<collection>/<_id>', methods=['GET', 'PUT', 'DELETE'])
 def create_user():
     """
        Function to create new users.
        """
     try:
         # Create new users
-        try:
-            values = request.get_json()
-            fname = values.get("fname")
-            lname = values.get("lname")
+        try:    
+            fname = request.json["fname"]
+            lname = request.json("lname")
             collection.insert_one({"fname: ":fname, "lname":lname, "courses": None, "studySpace": None, "phoneNumber": None})
             
         except:
@@ -72,13 +71,13 @@ def create_user():
         # Add message for debugging purpose
         return "", 500
 
-
+@app.route('/api/<collection>', methods=['GET', 'POST'])
 def get_users():
     users = client.db.collection.find()
     response = jsonify(users)
     return response
 
-
+@app.route('/api/<collection>/</id>/<courses>', methods=['GET', 'POST'])
 def add_classes(_id):
     if(_id):
         courses = request.json['classes']
@@ -88,7 +87,7 @@ def add_classes(_id):
         return response
     else:
         return NOT_FOUND()
-
+@app.route('/api/<collection>/</id>/<studySpace>', methods=['GET', 'POST'])
 def add_studySpace(_id):
     if(_id):
         space = request.json['space']
@@ -98,7 +97,7 @@ def add_studySpace(_id):
         return response
     else:
         return NOT_FOUND()
-
+@app.route('/api/<collection>/</id>/<phone>', methods=['GET', 'POST'])
 def add_phone(_id):
     if(_id):
         phone = request.json['phone']
