@@ -2,13 +2,9 @@ from flask import Flask, Response, request
 from flask_cors import CORS
 import json
 from datetime import datetime
-from resources.imdb_artists import IMDB_Artist
-from resources.orders import Orders
-from resources.person_resource import Person
-from resources.seasons_resource import Seasons
-from resources.episodes_resource import Episodes
-from resources.scenes_resource import Scenes
-from resources.movies_resource import Movies
+from resources.users_resource import Users
+# from resources.scenes_resource import Scenes
+# from resources.movies_resource import Movies
 
 import rest_utils
 
@@ -135,105 +131,107 @@ def specific_resource(resource_collection, resource_id):
 
     return rsp
 
-@app.route('/api/person', methods=['GET'])
-def retrieve_persons():
-    svc = service_factory['person']
-    res = svc.get_resource_all()
-    rsp = Response(json.dumps(res, default=str), status=200, content_type="application/json")
-    #print(rsp)
-    return rsp
+# @app.route('/api/person', methods=['GET'])
+# def retrieve_persons():
+#     svc = service_factory['person']
+#     res = svc.get_resource_all()
+#     rsp = Response(json.dumps(res, default=str), status=200, content_type="application/json")
+#     #print(rsp)
+#     return rsp
 
-@app.route('/api/person/<name>/acted_in', methods=['GET'])
-def retrieve_movies_person_actedin(name):
-    svc = service_factory['person']
-    res = svc.get_movies_person_actedin(name)
-    rsp = Response(json.dumps(res, default=str), status=200, content_type="application/json")
-    #print(rsp)
-    return rsp
+# @app.route('/api/person/<name>/acted_in', methods=['GET'])
+# def retrieve_movies_person_actedin(name):
+#     svc = service_factory['person']
+#     res = svc.get_movies_person_actedin(name)
+#     rsp = Response(json.dumps(res, default=str), status=200, content_type="application/json")
+#     #print(rsp)
+#     return rsp
 
-@app.route('/api/seasons', methods=['GET'])
-def retrieve_seasons():
-    svc = service_factory['seasons']
-    res = svc.get_resource_all()
-    rsp = Response(json.dumps(res, default=str), status=200, content_type="application/json")
-    #print(rsp)
-    return rsp
+# @app.route('/api/seasons', methods=['GET'])
+# def retrieve_seasons():
+#     svc = service_factory['seasons']
+#     res = svc.get_resource_all()
+#     rsp = Response(json.dumps(res, default=str), status=200, content_type="application/json")
+#     #print(rsp)
+#     return rsp
 
-@app.route('/api/seasons/<int:season_num>', methods=['GET'])
-def retrieve_season_by_name(season_num):
-    svc = service_factory['seasons']
-    res = svc.get_resource_by_num(season_num)
-    rsp = Response(json.dumps(res, default=str), status=200, content_type="application/json")
-    return rsp
-
-# @app.route('/api/seasons/<int:season_num>/episodes', methods=['GET'])
-# def retrieve_episode_by_season_name_query(season_num):
-#     svc = service_factory['episodes']
-#     res = svc.get_resource_all(season_num)
+# @app.route('/api/seasons/<int:season_num>', methods=['GET'])
+# def retrieve_season_by_name(season_num):
+#     svc = service_factory['seasons']
+#     res = svc.get_resource_by_num(season_num)
 #     rsp = Response(json.dumps(res, default=str), status=200, content_type="application/json")
 #     return rsp
 
-@app.route('/api/seasons/<int:season_num>/episodes/<int:episode_num>', methods=['GET'])
-def retrieve_episode_by_season_name_epname(season_num, episode_num):
-    svc = service_factory['episodes']
-    res = svc.get_resource_by_num(season_num, episode_num)
-    rsp = Response(json.dumps(res, default=str), status=200, content_type="application/json")
-    return rsp
+# # @app.route('/api/seasons/<int:season_num>/episodes', methods=['GET'])
+# # def retrieve_episode_by_season_name_query(season_num):
+# #     svc = service_factory['episodes']
+# #     res = svc.get_resource_all(season_num)
+# #     rsp = Response(json.dumps(res, default=str), status=200, content_type="application/json")
+# #     return rsp
 
-@app.route('/api/seasons/<int:season_num>/episodes/<int:episode_num>/scenes', methods=['GET'])
-def retrieve_scenes(season_num, episode_num):
-    svc = service_factory['scenes']
-    res = svc.get_resource_all(season_num, episode_num)
-    rsp = Response(json.dumps(res, default=str), status=200, content_type="application/json")
-    return rsp
+# @app.route('/api/seasons/<int:season_num>/episodes/<int:episode_num>', methods=['GET'])
+# def retrieve_episode_by_season_name_epname(season_num, episode_num):
+#     svc = service_factory['episodes']
+#     res = svc.get_resource_by_num(season_num, episode_num)
+#     rsp = Response(json.dumps(res, default=str), status=200, content_type="application/json")
+#     return rsp
 
-@app.route('/api/seasons/<int:season_num>/episodes/<int:episode_num>/scenes/<int:scene_num>', methods=['GET'])
-def retrieve_scenes_by_num(season_num, episode_num, scene_num):
-    svc = service_factory['scenes']
-    res = svc.get_resource_by_num(season_num, episode_num, scene_num)
-    rsp = Response(json.dumps(res, default=str), status=200, content_type="application/json")
-    return rsp
+# @app.route('/api/seasons/<int:season_num>/episodes/<int:episode_num>/scenes', methods=['GET'])
+# def retrieve_scenes(season_num, episode_num):
+#     svc = service_factory['scenes']
+#     res = svc.get_resource_all(season_num, episode_num)
+#     rsp = Response(json.dumps(res, default=str), status=200, content_type="application/json")
+#     return rsp
 
-@app.route('/api/seasons/<int:season_num>/episodes', methods=['GET'])
-def retrieve_episode_with_query(season_num):
-    request_inputs = rest_utils.RESTContext(request)
-    #print(request_inputs)
-    svc = service_factory['episodes']
+# @app.route('/api/seasons/<int:season_num>/episodes/<int:episode_num>/scenes/<int:scene_num>', methods=['GET'])
+# def retrieve_scenes_by_num(season_num, episode_num, scene_num):
+#     svc = service_factory['scenes']
+#     res = svc.get_resource_by_num(season_num, episode_num, scene_num)
+#     rsp = Response(json.dumps(res, default=str), status=200, content_type="application/json")
+#     return rsp
 
-    res = svc.get_resource_by_template(path=None,
-                              seasonNum=season_num,
-                              template=request_inputs.args,
-                              field_list=request_inputs.fields,
-                              limit=request_inputs.limit,
-                              offset=request_inputs.offset)
+# @app.route('/api/seasons/<int:season_num>/episodes', methods=['GET'])
+# def retrieve_episode_with_query(season_num):
+#     request_inputs = rest_utils.RESTContext(request)
+#     #print(request_inputs)
+#     svc = service_factory['episodes']
 
-    res = request_inputs.add_pagination(res)
-    rsp = Response(json.dumps(res, default=str), status=200, content_type="application/json")
-    return rsp
+#     res = svc.get_resource_by_template(path=None,
+#                               seasonNum=season_num,
+#                               template=request_inputs.args,
+#                               field_list=request_inputs.fields,
+#                               limit=request_inputs.limit,
+#                               offset=request_inputs.offset)
 
-@app.route('/api/movies', methods=['GET'])
-def retrieve_movies():
-    request_inputs = rest_utils.RESTContext(request)
-    #print(request_inputs)
-    svc = service_factory['movies']
+#     res = request_inputs.add_pagination(res)
+#     rsp = Response(json.dumps(res, default=str), status=200, content_type="application/json")
+#     return rsp
 
-    res = svc.get_resource_by_template(path=None,
-                                       template=request_inputs.args,
-                                       field_list=request_inputs.fields,
-                                       limit=request_inputs.limit,
-                                       offset=request_inputs.offset)
+# @app.route('/api/movies', methods=['GET'])
+# def retrieve_movies():
+#     request_inputs = rest_utils.RESTContext(request)
+#     #print(request_inputs)
+#     svc = service_factory['movies']
 
-    res = request_inputs.add_pagination(res)
-    rsp = Response(json.dumps(res, default=str), status=200, content_type="application/json")
-    return rsp
+#     res = svc.get_resource_by_template(path=None,
+#                                        template=request_inputs.args,
+#                                        field_list=request_inputs.fields,
+#                                        limit=request_inputs.limit,
+#                                        offset=request_inputs.offset)
+
+#     res = request_inputs.add_pagination(res)
+#     rsp = Response(json.dumps(res, default=str), status=200, content_type="application/json")
+#     return rsp
+
+
 
 
 if __name__ == '__main__':
-    service_factory['imdb_artists'] = IMDB_Artist()
-    service_factory['orders'] = Orders()
-    service_factory['person'] = Person()
-    service_factory['seasons'] = Seasons()
-    service_factory['episodes'] = Episodes()
-    service_factory['scenes'] = Scenes()
-    service_factory['movies'] = Movies()
+    service_factory['users'] = Users()
+    # service_factory['orders'] = Orders()
+    # service_factory['person'] = Person()
+    # service_factory['seasons'] = Seasons()
+    # service_factory['episodes'] = Episodes()
+    # service_factory['scenes'] = Scenes()
+    # service_factory['movies'] = Movies()
     app.run(host="0.0.0.0", port=5003)
