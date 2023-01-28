@@ -4,11 +4,13 @@ from oauth2client.service_account import ServiceAccountCredentials
 from pprint import pprint
 import streamlit as st
 from gsheetsdb import connect
+
+rowcount = 3
 scope = ["https://spreadsheets.google.com/feeds", 'https://www.googleapis.com/auth/spreadsheets',
          "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive"]
 
 credentials = ServiceAccountCredentials.from_json_keyfile_name(
-    "/home/shritam/Google_sheet_project/Cred.json", scope)
+    "./studybuddy-376115-369daa1f5b57.json", scope)
 
 client = gspread.authorize(credentials)
 
@@ -35,6 +37,16 @@ def run_query(query):
 sheet_url = st.secrets["public_gsheets_url"]
 rows = run_query(f'SELECT * FROM "{sheet_url}"')
 
+def addUser(fname, lname):
+    rowcount+=1
+    sheet.insert_row([rowcount, fname, lname],rowcount)
+def addCourses(rowcount, classes):
+    record = sheet.row_values(rowcount)
+    sheet.update_cell(rowcount, 4, classes)
+def favoriteSpace(space):
+    sheet.update_cell(rowcount, 5, space)
+def phone(phone):
+    sheet.update_cell(rowcount, 5, space)
 # def add_courses(course):
 #     # Add a new user's course information to the database
 #     conn = connect()
