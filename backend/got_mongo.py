@@ -1,6 +1,6 @@
 import sys
 import pymongo
-import config
+import backend.config as config
 
 
 def get_client():
