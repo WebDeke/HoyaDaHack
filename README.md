@@ -18,8 +18,7 @@ Hey! We wanted to make this guide in order to help provide you information about
 
 ##### Database Schema
 
-- Code for this demonstration is
-- Integration was attempted in `db.py` in our repository.
+- Integration was attempted in `db_rep.py` and `application.py` in our repository.
 
 #### Some past implementations
 
