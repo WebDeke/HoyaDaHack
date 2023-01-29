@@ -3,7 +3,7 @@ import streamlit as st
 # import numpy as np
 # from oauth2client.service_account import ServiceAccountCredentials
 from pprint import pprint
-# from urllib import requests 
+from urllib import requests 
 # import http.client
 
 # httpConn = http.client.HTTPSConnection("localhost", 5003)
@@ -32,9 +32,12 @@ phone = st.text_input("Phone number")
 
 st.button("Find a partner")
 
+st.button("Submit")
 
-# object = {"fname":fname, "lname":lname, "classes":classes, "studySpace":space, "phone":phone}
-# r = requests.post("localhost:5003/users",data=object)
+# if st.button("Submit"):
+#     #urllib request to api
+#     object = {"fname":fname, "lname":lname, "classes":classes, "studySpace":space, "phone":phone}
+#     r = requests.post("localhost:5003/api/users",data=object)
 
 #............................................
 
