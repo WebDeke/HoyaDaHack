@@ -1,13 +1,30 @@
 
 from http.client import NOT_FOUND, responses
+from . import db
+import streamlit as st
+
 from flask import Flask, request, jsonify
-import got_mongo
 import jsonify
-# from pymongo import PyMongo
+from pymongo import PyMongo
 from bson.objectid import ObjectId
 
+from pymongo import MongoClient
 
-client = got_mongo.get_client()
+# Initialize connection.
+# Uses st.experimental_singleton to only run once.
+@st.experimental_singleton(suppress_st_warning=True)
+def init_connection():
+    return MongoClient("mongodb+srv://asundar:5zGDjohcbP4TApTH@studyusers.b1bzofp.mongodb.net/?retryWrites=true&w=majority")
+
+# client = init_connection("mongodb+srv://studyusers.b1bzofp.mongodb.net/StudyUsers")
+client = init_connection()
+collection = client['Users']
+
+def t_mongo():
+    app = Flask(__name__)
+    c = client
+    print(list(c.list_databases()))
+
 collection = client['Users']
 # mongo = PyMongo()
 
@@ -107,4 +124,4 @@ def add_phone(_id):
 
 if __name__ == "__main__":
     app.run(debug=True, port=3000)
-
+t_mongo()

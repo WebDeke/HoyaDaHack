@@ -70,17 +70,17 @@ def add_user(fname, lname, classes, studySpace, phone):
     record = {"fname":fname, "lname":lname, "classes":classes, "studySpace":studySpace, "phone":phone}
     return db_rep.create_user(record)
 
-# @app.route('/api/<collection>/<id>', methods=['PUT'])
-# def insert_classes(classes, _id):
-#     return db_rep.add_classes(classes, _id)
+@app.route('/api/<collection>/<id>', methods=['PUT'])
+def insert_classes(classes, _id):
+    return db_rep.add_classes(classes, _id)
 
-# @app.route('/api/<collection>/<id>', methods=['PUT'])
-# def insert_studySpace(studySpace, _id):
-#     return db_rep.add_studySpace(studySpace, _id)
+@app.route('/api/<collection>/<id>', methods=['PUT'])
+def insert_studySpace(studySpace, _id):
+    return db_rep.add_studySpace(studySpace, _id)
 
-# @app.route('/api/<collection>/<id>', methods=['PUT'])
-# def insert_phone(phone, ):
-#     return db_rep.add_phone(phone)
+@app.route('/api/<collection>/<id>', methods=['PUT'])
+def insert_phone(phone, ):
+    return db_rep.add_phone(phone)
 
 
 @app.route('/api/<resource_collection>', methods=['GET', 'POST'])
