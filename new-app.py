@@ -4,6 +4,7 @@ import streamlit as st
 # from oauth2client.service_account import ServiceAccountCredentials
 from pprint import pprint
 import requests 
+from requests.adapters import HTTPAdapter, Retry
 # import http.client
 
 # httpConn = http.client.HTTPSConnection("localhost", 5003)
@@ -36,7 +37,12 @@ st.button("Find a partner")
 if st.button("Submit"):
     #urllib request to api
     object = {"fname":fname, "lname":lname, "classes":classes, "studySpace":space, "phone":phone}
-    r = requests.post("http://127.0.0.1:5005/api/users",data=object)
+    session = requests.Session()
+    retry = Retry(connect=3, backoff_factor=0.5)
+    adapter = HTTPAdapter(max_retries=retry)
+    session.mount('http://', adapter)
+    session.mount('https://', adapter)
+    req = session.post("http://127.0.0.1:5005/api/users",data=object)
 
 #............................................
 
