@@ -3,7 +3,7 @@ import streamlit as st
 # import numpy as np
 # from oauth2client.service_account import ServiceAccountCredentials
 from pprint import pprint
-from urllib import requests 
+import requests 
 # import http.client
 
 # httpConn = http.client.HTTPSConnection("localhost", 5003)
