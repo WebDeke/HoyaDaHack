@@ -1,84 +1,75 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import gspread 
 from oauth2client.service_account import ServiceAccountCredentials
 from pprint import pprint
 import streamlit as st
 from gsheetsdb import connect
-import application 
+from urllib import requests 
 import http.client
 
-import sys, subprocess
-subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'gspread'])
-scope = ["https://spreadsheets.google.com/feeds", 'https://www.googleapis.com/auth/spreadsheets',
-         "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive"]
+# import sys, subprocess
+# subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'gspread'])
+# scope = ["https://spreadsheets.google.com/feeds", 'https://www.googleapis.com/auth/spreadsheets',
+#          "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive"]
 
-credentials = ServiceAccountCredentials.from_json_keyfile_name(
-    "./studybuddy-376115-369daa1f5b57.json", scope)
+# credentials = ServiceAccountCredentials.from_json_keyfile_name(
+#     "./studybuddy-376115-369daa1f5b57.json", scope)
 
-client = gspread.authorize(credentials)
+# client = gspread.authorize(credentials)
 
 httpConn = http.client.HTTPSConnection("localhost", 5003)
 
 
 # Open the spreadhseet
-sheet = client.open("Commilito Backend").worksheet("commilito_backend")
+# sheet = client.open("Commilito Backend").worksheet("commilito_backend")
 
-# Get a list of all records
-data = sheet.get_all_records()
-pprint(data)
+# # Get a list of all records
+# data = sheet.get_all_records()
+# pprint(data)
 
-public_gsheets_url = "https://docs.google.com/spreadsheets/d/1tYPHXibwW4lMQBH8iaXOXqZHg5P7-lVQ7JZ8EGmki5w/edit#gid=0"
+# public_gsheets_url = "https://docs.google.com/spreadsheets/d/1tYPHXibwW4lMQBH8iaXOXqZHg5P7-lVQ7JZ8EGmki5w/edit#gid=0"
 # Create a connection object.
 conn = connect()
 
 rowcount = 4
 # Perform SQL query on the Google Sheet.
 # Uses st.cache to only rerun when the query changes or after 10 min.
-@st.cache(ttl=600)
-def run_query(query):
-    rows = conn.execute(query, headers=1)
-    rows = rows.fetchall()
-    return rows
+# @st.cache(ttl=600)
+# def run_query(query):
+#     rows = conn.execute(query, headers=1)
+#     rows = rows.fetchall()
+#     return rows
 
-sheet_url = st.secrets["public_gsheets_url"]
-rows = run_query(f'SELECT * FROM "{sheet_url}"')
-@st.cache(ttl=600)
-def run_query(query):
-    rows = conn.execute(query, headers=1)
-    rows = rows.fetchall()
-    return rows
-def addUser(fname, lname):
-    global rowcount
-    rowcount += 1
-    sheet.insert_row([str(rowcount-1), fname, lname], rowcount)
-
-
-def addCourses(classes):
-    global rowcount
-    record = sheet.row_values(rowcount)
-    sheet.update_cell(rowcount, 4, classes)
+# sheet_url = st.secrets["public_gsheets_url"]
+# rows = run_query(f'SELECT * FROM "{sheet_url}"')
+# @st.cache(ttl=600)
+# def run_query(query):
+#     rows = conn.execute(query, headers=1)
+#     rows = rows.fetchall()
+#     return rows
+# def addUser(fname, lname):
+#     global rowcount
+#     rowcount += 1
+#     sheet.insert_row([str(rowcount-1), fname, lname], rowcount)
 
 
-def favoriteSpace(space):
-    global rowcount
-    sheet.update_cell(rowcount, 5, space)
+# def addCourses(classes):
+#     global rowcount
+#     record = sheet.row_values(rowcount)
+#     sheet.update_cell(rowcount, 4, classes)
 
 
-def phone(phone):
-    global rowcount
-    sheet.update_cell(rowcount, 6, phone)
+# def favoriteSpace(space):
+#     global rowcount
+#     sheet.update_cell(rowcount, 5, space)
 
 
+# def phone(phone):
+#     global rowcount
+#     sheet.update_cell(rowcount, 6, phone)
 
 
-# Get a list of all records
-
-
-def userList():
-    data = sheet.get_all_records()
-    pprint(data)
 
 #START OF STREAMLIT CODE..................
 
@@ -105,7 +96,8 @@ st.button("Find a partner")
 
 
 object = {"fname":fname, "lname":lname, "classes":classes, "studySpace":space, "phone":phone}
-application.post(object)
+r = requests.post("localhost:5003/users",data=object)
+print(r.text)
 
 #............................................
 
