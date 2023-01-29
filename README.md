@@ -14,7 +14,7 @@ Hey! We wanted to make this guide in order to help provide you information about
 ##### Algorithm
 
 - Live demo [here.](https://replit.com/@WebDeke1/Commilito-Demo)
-- Code for this demonstration is `new-algo.py` on our Github repository [here.](https://github.com/WebDeke/HoyaDaHack).
+- Code for this demonstration is `final-algo.py` on our Github repository [here.](https://github.com/WebDeke/HoyaDaHack).
 
 ##### Database Schema
 
