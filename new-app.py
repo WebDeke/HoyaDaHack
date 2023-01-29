@@ -33,6 +33,17 @@ phone = st.text_input("Phone number")
 
 if st.button("Find a partner"):
     st.info('This is a purely informational message', icon="ℹ️")
+    data = [
+    {"Rank": 1, "Name": "John", "Score": 4.5, "Courses": ["Math", "Science"], "Phone": 123456},
+    {"Rank": 2, "Name": "Jane", "Score": 4.0, "Courses": ["History", "English"], "Phone": 654321},
+    {"Rank": 3, "Name": "Jim", "Score": 3.7, "Courses": ["Geography", "Music"], "Phone": 111111},
+    ]
+
+    st.write("Streamlit Table Example")
+
+    st.write("## Table Data")
+
+    st.table(data)
 
 
 
