@@ -1,10 +1,9 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-from oauth2client.service_account import ServiceAccountCredentials
+# from oauth2client.service_account import ServiceAccountCredentials
 from pprint import pprint
 import streamlit as st
-from gsheetsdb import connect
 from urllib import requests 
 import http.client
 
@@ -30,7 +29,6 @@ httpConn = http.client.HTTPSConnection("localhost", 5003)
 
 # public_gsheets_url = "https://docs.google.com/spreadsheets/d/1tYPHXibwW4lMQBH8iaXOXqZHg5P7-lVQ7JZ8EGmki5w/edit#gid=0"
 # Create a connection object.
-conn = connect()
 
 rowcount = 4
 # Perform SQL query on the Google Sheet.
