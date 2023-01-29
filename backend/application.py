@@ -1,6 +1,7 @@
 from flask import Flask, Response, request
+import requests
 from flask_cors import CORS
-import json
+import json, jsonify
 from datetime import datetime
 import db_rep
 from resources.users_resource import Users
@@ -12,6 +13,7 @@ import rest_utils
 
 app = Flask(__name__)
 CORS(app)
+
 
 service_factory = dict()
 
@@ -61,98 +63,111 @@ def demo(parameter1=None):
 ##################################################################################################################
 
 
-@app.route('/')
+@app.route('/api')
 def hello_world():
     return '<u>Hello World!</u>'
 
-@app.route('/api/<collection>/', methods=['POST'])
+@app.route('/api/users', methods=['POST'])
 def add_user():
-    data = request.json()
-    record = {"fname":data["fname"], "lname":data["lname"], "classes":data["classes"], "studySpace":data["studySpace"], "phone":data["phone"]}
-    return db_rep.create_user(record)
+    fname = request.json['fname']
+    lname = request.json['lname']
+    classes = request.json['classes']
+    studySpace = request.json['studySpace']
+    phone = request.json['phone']
 
-@app.route('/api/<collection>/<id>', methods=['PUT'])
+    record = {"fname":fname, "lname":lname, "classes":classes, "studySpace":studySpace, "phone":phone}
+    result =  db_rep.Users.create_user(record)
+    return "Added user"
+
+@app.route('/api/users/classes', methods=['PUT'])
 def insert_classes():
-    data = request.json()
-    return db_rep.add_classes(data)
+    classes = request.json['classes']
+    phone = request.json['phone']
 
-@app.route('/api/<collection>/<id>', methods=['PUT'])
+    record = {"classes":classes,"phone":phone}
+    return db_rep.Users.add_classes(record)
+
+@app.route('/api/users/studySpace', methods=['PUT'])
 def insert_studySpace():
-    data = request.json()
 
-    return db_rep.add_studySpace(data)
+    studySpace = request.json['studySpace']
+    phone = request.json['phone']
 
-@app.route('/api/<collection>/<id>', methods=['PUT'])
+    record = {"studySpace":studySpace, "phone":phone}
+    return db_rep.Users.add_studySpace(record)
+
+@app.route('/api/users/phone', methods=['PUT'])
 def insert_phone():
-    data = request.json()
-    return db_rep.add_phone(data)
+    phone = request.json['phone']
+    record = {"phone": phone}
+    return db_rep.Users.add_phone(record)
 
 
-@app.route('/api/<resource_collection>', methods=['GET', 'POST'])
-def do_resource_collection(resource_collection):
-    """
-    1. HTTP GET return all resources.
-    2. HTTP POST with body --> create a resource, i.e --> database.
-    :return:
-    """
-    request_inputs = rest_utils.RESTContext(request, resource_collection)
-    svc = service_factory.get(resource_collection, None)
+# @app.route('/api/<resource_collection>', methods=['GET', 'POST'])
+# def do_resource_collection(resource_collection):
+#     """
+#     1. HTTP GET return all resources.
+#     2. HTTP POST with body --> create a resource, i.e --> database.
+#     :return:
+#     """
+#     request_inputs = rest_utils.RESTContext(request, resource_collection)
+#     svc = service_factory.get(resource_collection, None)
 
-    #print("DEBUG request inputs", request_inputs)
-    #print("DEBUG resource collection", resource_collection)
-    #print("DEBUG svc", svc)
+#     #print("DEBUG request inputs", request_inputs)
+#     #print("DEBUG resource collection", resource_collection)
+#     #print("DEBUG svc", svc)
 
-    if request_inputs.method == "GET":
-        res = svc.get_by_template(path=None,
-                                  template=request_inputs.args,
-                                  field_list=request_inputs.fields,
-                                  limit=request_inputs.limit,
-                                  offset=request_inputs.offset)
+#     if request_inputs.method == "GET":
+#         res = svc.get_by_template(path=None,
+#                                   template=request_inputs.args,
+#                                   field_list=request_inputs.fields,
+#                                   limit=request_inputs.limit,
+#                                   offset=request_inputs.offset)
 
-        res = request_inputs.add_pagination(res)
-        rsp = Response(json.dumps(res, default=str), status=200, content_type="application/json")
+#         res = request_inputs.add_pagination(res)
+#         rsp = Response(json.dumps(res, default=str), status=200, content_type="application/json")
 
-    elif request_inputs.method == "POST":
-        data = request_inputs.data
+#     elif request_inputs.method == "POST":
+#         data = request_inputs.data
 
-        #print("DEBUG POST REQUEST_INPUTS ", request_inputs)
+#         #print("DEBUG POST REQUEST_INPUTS ", request_inputs)
 
-        res = svc.create(data)
+#         res = svc.create(data)
 
-        headers = [{"Location", "/users/" + str(res)}]
-        rsp = Response("CREATED", status=201, headers=headers, content_type="text/plain")
-    else:
-        rsp = Response("NOT IMPLEMENTED", status=501, content_type="text/plain")
+#         headers = [{"Location", "/users/" + str(res)}]
+#         rsp = Response("CREATED", status=201, headers=headers, content_type="text/plain")
+#     else:
+#         rsp = Response("NOT IMPLEMENTED", status=501, content_type="text/plain")
 
-    return rsp
+#     return rsp
 
 
-@app.route('/api/<resource_collection>/<resource_id>', methods=['GET', 'PUT', 'DELETE'])
-def specific_resource(resource_collection, resource_id):
-    """
-    1. Get a specific one by ID.
-    2. Update body and update.
-    3. Delete would ID and delete it.
-    :param user_id:
-    :return:
-    """
-    request_inputs = rest_utils.RESTContext(request, resource_collection)
-    svc = service_factory.get(resource_collection)
+# @app.route('/api/<resource_collection>/<resource_id>', methods=['GET', 'PUT', 'DELETE'])
+# def specific_resource(resource_collection, resource_id):
+#     """
+#     1. Get a specific one by ID.
+#     2. Update body and update.
+#     3. Delete would ID and delete it.
+#     :param user_id:
+#     :return:
+#     """
+#     request_inputs = rest_utils.RESTContext(request, resource_collection)
+#     svc = service_factory.get(resource_collection)
 
-    if request_inputs.method == "GET":
-        res = svc.get_resource_by_id(resource_id)
-        rsp = Response(json.dumps(res, default=str), status=200, content_type="application/json")
-    elif request_inputs.method == "PUT":
-        #print("DEBUG PUT REQUEST_INPUTS ", request_inputs)
-        res = svc.update_resource_by_id(resource_id, request_inputs.data)
-        rsp = Response(json.dumps(res, indent=2, default=str), status=200, content_type="application/json")
-    elif request_inputs.method == "DELETE":
-        res = svc.delete_resource_by_id(resource_id)
-        rsp = Response(json.dumps(res, indent=2, default=str), status=200, content_type="application/json")
-    else:
-        rsp = Response("NOT IMPLEMENTED", status=501, content_type="text/plain")
+#     if request_inputs.method == "GET":
+#         res = svc.get_resource_by_id(resource_id)
+#         rsp = Response(json.dumps(res, default=str), status=200, content_type="application/json")
+#     elif request_inputs.method == "PUT":
+#         #print("DEBUG PUT REQUEST_INPUTS ", request_inputs)
+#         res = svc.update_resource_by_id(resource_id, request_inputs.data)
+#         rsp = Response(json.dumps(res, indent=2, default=str), status=200, content_type="application/json")
+#     elif request_inputs.method == "DELETE":
+#         res = svc.delete_resource_by_id(resource_id)
+#         rsp = Response(json.dumps(res, indent=2, default=str), status=200, content_type="application/json")
+#     else:
+#         rsp = Response("NOT IMPLEMENTED", status=501, content_type="text/plain")
 
-    return rsp
+#     return rsp
 
 # @app.route('/api/person', methods=['GET'])
 # def retrieve_persons():

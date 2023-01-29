@@ -17,7 +17,7 @@ def init_connection():
 
 # client = init_connection("mongodb+srv://studyusers.b1bzofp.mongodb.net/StudyUsers")
 client = init_connection()
-collection = client['Users']
+collection = client['StudyUsers']
 
 def t_mongo():
     app = Flask(__name__)
@@ -63,68 +63,68 @@ user_schema = {
         'required': True,
     }
 }
-
-def get_users():
-    users = client.db.collection.find()
-    response = jsonify(users)
-    return response
-
-def create_user(record):
-    result = client.db.collection.insert_one(record)
-    response = jsonify({'message': 'User' + result._id + 'Updated Successfuly'})
-    response.status_code = 200
-    return response
-
-
-def listFirstNames():
-    return collection.distinct('fname')
-def listLastNames():
-    return collection.distinct('lname')
-
-# def checkIfDuplicate(fname, lname):
-#     firstNames = listFirstNames()
-#     lastNames = listLastNames()
-#     for i in range(0, len(firstNames)):
-#         for j in range(0, len(lastNames)):
-#             if(fname == firstNames[i] and lname == lastNames[j]):
-#                 return True
-#     return False
-
 def getById(record):
-    itm = client.db.collection.find_one({"phone":record.json["phone"]})
-    return itm.get("_id")
+    phone = record["phone"]
+    itm = client.db.collection.find_one({"phone": phone})
+    return itm
+class Users():
+    def get_users():
+        users = client.db.collection.find()
+        response = jsonify(users)
+        return response
 
-def add_classes(record):
-    _id = getById(record)
-    if(_id):
-        courses = request.json['classes']
-        client.db.collection.update_one({'_id': ObjectId(_id['$oid']) if '$oid' in _id else ObjectId(_id)}, {"courses": courses})
-        response = jsonify({'message': 'User' + _id + 'Updated Successfuly'})
-        response.status_code = 200
-        return response
-    else:
-        return NOT_FOUND()
-def add_studySpace(record):
-    _id = getById(record)
-    if(_id):
-        space = request.json['space']
-        client.db.collection.update_one({'_id': ObjectId(_id['$oid']) if '$oid' in _id else ObjectId(_id)}, {"studySpace": space})
-        response = jsonify({'message': 'User' + _id + 'Updated Successfuly'})
-        response.status_code = 200
-        return response
-    else:
-        return NOT_FOUND()
+    def create_user(record):
+        result = client.db.collection.insert_one(record) 
+        return result
 
-def add_phone(record):
-    _id = getById(record)
-    if(_id):
-        phone = request.json['phone']
-        client.db.collection.update_one({'_id': ObjectId(_id['$oid']) if '$oid' in _id else ObjectId(_id)}, {"phone": phone})
-        response = jsonify({'message': 'User' + _id + 'Updated Successfuly'})
-        response.status_code = 200
-        return response
-    else:
-        return NOT_FOUND()
+
+    def listFirstNames():
+        return collection.distinct('fname')
+    def listLastNames():
+        return collection.distinct('lname')
+
+    # def checkIfDuplicate(fname, lname):
+    #     firstNames = listFirstNames()
+    #     lastNames = listLastNames()
+    #     for i in range(0, len(firstNames)):
+    #         for j in range(0, len(lastNames)):
+    #             if(fname == firstNames[i] and lname == lastNames[j]):
+    #                 return True
+    #     return False
+
+
+    def add_classes(record):
+        old_record = getById(record)
+        if(old_record):
+            courses = record['classes']
+            new_document = {'$set': {'classes': courses}}
+            client.db.collection.replace_one({"courses": old_record["courses"]}, new_document)
+            #client.db.collection.update_one({'_id': ObjectId(_id['$oid']) if '$oid' in _id else ObjectId(_id)}, {"courses": courses})
+            # response = jsonify({'message': 'User' + _id + 'Updated Successfuly'})
+            return "Hello"
+        else:
+            return NOT_FOUND()
+    def add_studySpace(record):
+        _id = getById(record)
+        if(_id):
+            space = request.json['space']
+            client.db.collection.update_one({'_id': ObjectId(_id['$oid']) if '$oid' in _id else ObjectId(_id)}, {"studySpace": space})
+            # response = jsonify({'message': 'User' + _id + 'Updated Successfuly'})
+            response.status_code = 200
+            return response
+        else:
+            return NOT_FOUND()
+
+    def add_phone(record):
+        _id = getById(record)
+        if(_id):
+            phone = request.json['phone']
+            client.db.collection.update_one({'_id': ObjectId(_id['$oid']) if '$oid' in _id else ObjectId(_id)}, {"phone": phone})
+            # response = jsonify({'message': 'User' + _id + 'Updated Successfuly'})
+            response.status_code = 200
+            return response
+        else:
+            return NOT_FOUND()
 
 
 if __name__ == "__main__":
