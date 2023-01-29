@@ -1,11 +1,10 @@
 
 from http.client import NOT_FOUND, responses
-from . import db
 import streamlit as st
 
 from flask import Flask, request, jsonify
 import jsonify
-from pymongo import PyMongo
+# from pymongo import PyMongo
 from bson.objectid import ObjectId
 
 from pymongo import MongoClient
