@@ -35,7 +35,7 @@ if st.button("Find a partner"):
     data = [
     {"Rank": 1, "Name": "John", "Score": 5, "Courses": "CLSL 002, COSC 225, MATH 150", "Study Place": "C", "Phone": 1234356},
     {"Rank": 2, "Name": "Lauren", "Score": 4.5, "Courses": "COSC 225, MATH 150", "Study Place": "B", "Phone": 6543213},
-    {"Rank": 3, "Name": "Geno", "Score": 4.0, "Courses": "MATH 150, CLSL 002", "Study Place": E, "Phone": 1111311"},
+    {"Rank": 3, "Name": "Geno", "Score": 4.0, "Courses": "MATH 150, CLSL 002", "Study Place": "E", "Phone": 1111311}
     ]
 
     st.write("### Your Best Matches")
