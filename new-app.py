@@ -1,6 +1,6 @@
 import streamlit as st
-# import pandas as pd
-# import numpy as np
+import pandas as pd
+import numpy as np
 # from oauth2client.service_account import ServiceAccountCredentials
 from pprint import pprint
 import requests 
@@ -31,18 +31,20 @@ space = st.select_slider(
 phone = st.text_input("Phone number")
 
 
-st.button("Find a partner")
+if st.button("Find a partner"):
+    st.info('This is a purely informational message', icon="ℹ️")
 
 
-if st.button("Submit"):
-    #urllib request to api
-    object = {"fname":fname, "lname":lname, "classes":classes, "studySpace":space, "phone":phone}
-    session = requests.Session()
-    retry = Retry(connect=3, backoff_factor=0.5)
-    adapter = HTTPAdapter(max_retries=retry)
-    session.mount('http://', adapter)
-    session.mount('https://', adapter)
-    req = session.post("http://127.0.0.1:5005/api/users",data=object)
+
+# if st.button("Submit"):
+#    urllib request to api
+#    object = {"fname":fname, "lname":lname, "classes":classes, "studySpace":space, "phone":phone}
+#   session = requests.Session()
+#    retry = Retry(connect=3, backoff_factor=0.5)
+#    adapter = HTTPAdapter(max_retries=retry)
+#    session.mount('http://', adapter)
+#    session.mount('https://', adapter)
+#    req = session.post("http://127.0.0.1:5005/api/users",data=object)
 
 #............................................
 
