@@ -1,11 +1,10 @@
 import streamlit as st
-import pandas as pd
-import numpy as np
+# import pandas as pd
+# import numpy as np
 # from oauth2client.service_account import ServiceAccountCredentials
 from pprint import pprint
-import streamlit as st
-from urllib import requests 
-import http.client
+# from urllib import requests 
+# import http.client
 
 # import sys, subprocess
 # subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'gspread'])
