@@ -16,7 +16,7 @@ from pprint import pprint
 
 # client = gspread.authorize(credentials)
 
-httpConn = http.client.HTTPSConnection("localhost", 5003)
+# httpConn = http.client.HTTPSConnection("localhost", 5003)
 
 
 # Open the spreadhseet
@@ -92,8 +92,8 @@ phone = st.text_input("Phone number")
 st.button("Find a partner")
 
 
-object = {"fname":fname, "lname":lname, "classes":classes, "studySpace":space, "phone":phone}
-r = requests.post("localhost:5003/users",data=object)
+# object = {"fname":fname, "lname":lname, "classes":classes, "studySpace":space, "phone":phone}
+# r = requests.post("localhost:5003/users",data=object)
 print(r.text)
 
 #............................................
