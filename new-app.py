@@ -94,7 +94,6 @@ st.button("Find a partner")
 
 # object = {"fname":fname, "lname":lname, "classes":classes, "studySpace":space, "phone":phone}
 # r = requests.post("localhost:5003/users",data=object)
-print(r.text)
 
 #............................................
 
