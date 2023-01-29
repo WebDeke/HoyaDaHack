@@ -6,6 +6,8 @@ from oauth2client.service_account import ServiceAccountCredentials
 from pprint import pprint
 import streamlit as st
 from gsheetsdb import connect
+import application 
+import http.client
 
 import sys, subprocess
 subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'gspread'])
@@ -17,6 +19,7 @@ credentials = ServiceAccountCredentials.from_json_keyfile_name(
 
 client = gspread.authorize(credentials)
 
+httpConn = http.client.HTTPSConnection("localhost", 5003)
 
 
 # Open the spreadhseet
@@ -67,21 +70,6 @@ def phone(phone):
     global rowcount
     sheet.update_cell(rowcount, 6, phone)
 
-def listFirstNames():
-    print(sheet.col_values(2))
-    return sheet.col_values(2)
-def listLastNames():
-    print(sheet.col_values(3))
-    return sheet.col_values(3)
-
-def checkIfDuplicate(fname, lname):
-    firstNames = listFirstNames()
-    lastNames = listLastNames()
-    for i in range(0, len(firstNames)):
-        for j in range(0, len(lastNames)):
-            if(fname == firstNames[i] and lname == lastNames[j]):
-                return True
-    return False
 
 
 
@@ -96,6 +84,9 @@ def userList():
 
 st.title('Commilito')
 st.subheader("Combine academic weapons.")
+fname = st.text_input("first name")
+lname = st.text_input("last name")
+
 classes = st.multiselect(
     'What classes are you taking',
     ['COSC 225', 'MATH 150', 'CHEM 228', 'PHYS 101',
@@ -109,20 +100,25 @@ space = st.select_slider(
 
 phone = st.text_input("Phone number")
 
+
 st.button("Find a partner")
+
+
+object = {"fname":fname, "lname":lname, "classes":classes, "studySpace":space, "phone":phone}
+application.post(object)
 
 #............................................
 
 
-#TEST CODE, not part of codebase
-# Create a connection object.
-print("Hello World!")
-addUser("Hanz", "Zimmer")
-# addUser()
-classitems = "Calc1,Calc2"
-addCourses(classitems)
+# #TEST CODE, not part of codebase
+# # Create a connection object.
+# print("Hello World!")
+# addUser("Hanz", "Zimmer")
+# # addUser()
+# classitems = "Calc1,Calc2"
+# addCourses(classitems)
 
-sheet.col_values
+# sheet.col_values
 
-st.write(sheet.get_all_records())
+# st.write(sheet.get_all_records())
 

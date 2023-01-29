@@ -2,6 +2,7 @@ from flask import Flask, Response, request
 from flask_cors import CORS
 import json
 from datetime import datetime
+import db_rep
 from resources.users_resource import Users
 # from resources.scenes_resource import Scenes
 # from resources.movies_resource import Movies
@@ -63,6 +64,23 @@ def demo(parameter1=None):
 @app.route('/')
 def hello_world():
     return '<u>Hello World!</u>'
+
+@app.route('/api/<collection>/', methods=['POST'])
+def add_user(fname, lname, classes, studySpace, phone):
+    record = {"fname":fname, "lname":lname, "classes":classes, "studySpace":studySpace, "phone":phone}
+    return db_rep.create_user(record)
+
+# @app.route('/api/<collection>/<id>', methods=['PUT'])
+# def insert_classes(classes, _id):
+#     return db_rep.add_classes(classes, _id)
+
+# @app.route('/api/<collection>/<id>', methods=['PUT'])
+# def insert_studySpace(studySpace, _id):
+#     return db_rep.add_studySpace(studySpace, _id)
+
+# @app.route('/api/<collection>/<id>', methods=['PUT'])
+# def insert_phone(phone, ):
+#     return db_rep.add_phone(phone)
 
 
 @app.route('/api/<resource_collection>', methods=['GET', 'POST'])
