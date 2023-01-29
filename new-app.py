@@ -36,7 +36,7 @@ st.button("Find a partner")
 if st.button("Submit"):
     #urllib request to api
     object = {"fname":fname, "lname":lname, "classes":classes, "studySpace":space, "phone":phone}
-    r = requests.post("localhost:5003/api/users",data=object)
+    r = requests.post("http://127.0.0.1:5003/api/users",data=object)
 
 #............................................
 
