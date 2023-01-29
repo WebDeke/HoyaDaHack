@@ -66,21 +66,26 @@ def hello_world():
     return '<u>Hello World!</u>'
 
 @app.route('/api/<collection>/', methods=['POST'])
-def add_user(fname, lname, classes, studySpace, phone):
-    record = {"fname":fname, "lname":lname, "classes":classes, "studySpace":studySpace, "phone":phone}
+def add_user():
+    data = request.json()
+    record = {"fname":data["fname"], "lname":data["lname"], "classes":data["classes"], "studySpace":data["studySpace"], "phone":data["phone"]}
     return db_rep.create_user(record)
 
 @app.route('/api/<collection>/<id>', methods=['PUT'])
-def insert_classes(classes, _id):
-    return db_rep.add_classes(classes, _id)
+def insert_classes():
+    data = request.json()
+    return db_rep.add_classes(data)
 
 @app.route('/api/<collection>/<id>', methods=['PUT'])
-def insert_studySpace(studySpace, _id):
-    return db_rep.add_studySpace(studySpace, _id)
+def insert_studySpace():
+    data = request.json()
+
+    return db_rep.add_studySpace(data)
 
 @app.route('/api/<collection>/<id>', methods=['PUT'])
-def insert_phone(phone, ):
-    return db_rep.add_phone(phone)
+def insert_phone():
+    data = request.json()
+    return db_rep.add_phone(data)
 
 
 @app.route('/api/<resource_collection>', methods=['GET', 'POST'])

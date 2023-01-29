@@ -69,9 +69,9 @@ def get_users():
     response = jsonify(users)
     return response
 
-def create_user(_id, record):
-    client.db.collection.insert_one(record)
-    response = jsonify({'message': 'User' + _id + 'Updated Successfuly'})
+def create_user(record):
+    result = client.db.collection.insert_one(record)
+    response = jsonify({'message': 'User' + result._id + 'Updated Successfuly'})
     response.status_code = 200
     return response
 
@@ -90,8 +90,12 @@ def listLastNames():
 #                 return True
 #     return False
 
+def getById(record):
+    itm = client.db.collection.find_one({"phone":record.json["phone"]})
+    return itm.get("_id")
 
-def add_classes(_id):
+def add_classes(record):
+    _id = getById(record)
     if(_id):
         courses = request.json['classes']
         client.db.collection.update_one({'_id': ObjectId(_id['$oid']) if '$oid' in _id else ObjectId(_id)}, {"courses": courses})
@@ -100,7 +104,8 @@ def add_classes(_id):
         return response
     else:
         return NOT_FOUND()
-def add_studySpace(_id):
+def add_studySpace(record):
+    _id = getById(record)
     if(_id):
         space = request.json['space']
         client.db.collection.update_one({'_id': ObjectId(_id['$oid']) if '$oid' in _id else ObjectId(_id)}, {"studySpace": space})
@@ -110,7 +115,8 @@ def add_studySpace(_id):
     else:
         return NOT_FOUND()
 
-def add_phone(_id):
+def add_phone(record):
+    _id = getById(record)
     if(_id):
         phone = request.json['phone']
         client.db.collection.update_one({'_id': ObjectId(_id['$oid']) if '$oid' in _id else ObjectId(_id)}, {"phone": phone})
